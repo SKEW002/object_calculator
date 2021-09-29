@@ -3,10 +3,10 @@
 #include <ctype.h>
 #include <math.h>
 #include <stdlib.h>
+//#include "main.h"
 
 char object[6][15];
 int n_choices; 
-float result = 0; 
 
 typedef struct shape_param{
     float length;
@@ -178,120 +178,133 @@ int display_shapes(char object[][15])
 }
 
 
-void main() {
+int main() {
+    while(1){
+        char cont;
+        int input = 0;
+        //system("clear");
+        Shape shape;
+        shape.length = 0;
+        shape.width = 0;
+        shape.height = 0;
+        shape.radius = 0;
 
-    // DataBase of Dimensions, Objects and Parameters 
-    char cont;
-    int input = 0;
-    //system("clear");
-    Shape shape;
-    shape.length = 0;
-    shape.width = 0;
-    shape.height = 0;
-    shape.radius = 0;
+        int object_dimension;
 
-    int object_dimension;
+        char object[][15] = {"Rectangle", "Square", "Circle","Cube", "Block", "Sphere", "Cone","/"};
 
-    char object[][15] = {"Rectangle", "Square", "Circle","Cube", "Block", "Sphere", "Cone","/"};
+        printf("Welcome! This program can calculate properties of standard 2D and 3D shapes. \n");
+        n_choices = display_shapes(object);
+        printf("Please select the shape from above: \n");
+        
+        get_value(n_choices, &input);
 
-    printf("Welcome! This program can calculate properties of standard 2D and 3D shapes. \n");
-    n_choices = display_shapes(object);
-    printf("Please select the shape from above: \n");
-    
-    get_value(n_choices, &input);
-
-    if(input >= 1 && input<=3){
-        object_dimension = 1; //2D
-    }
-    else{
-        object_dimension = 2; //3D
-    }
-    display_chosen(object, input);
-
-    switch(input){
-        case 1: // Rectangle
-            printf("Input the length: ");
-            get_param(&shape.length);
-            printf("Length = %f cm\n", shape.length);
-            printf("Input the width: ");
-            get_param(&shape.width);
-            printf("Width = %f cm\n", shape.width);
-            break;
-
-        case 2: // Square
-            printf("Input the length: ");
-            get_param(&shape.length);
-            printf("Length = %f cm\n", shape.length);
-            break;
-
-        case 3: // Circle
-            printf("Input the radius: ");
-            get_param(&shape.radius);
-            printf("Radius = %f cm\n", shape.radius);
-            break;
-
-        case 4: // Cube
-            printf("Input the length: ");
-            get_param(&shape.length);
-            printf("Radius = %f cm\n", shape.length);
-            break;
-
-        case 5: // Block
-            printf("Input the length: ");
-            get_param(&shape.length);
-            printf("Length = %f cm\n", shape.length);
-            printf("Input the width: ");
-            get_param(&shape.width);
-            printf("Width = %f cm\n", shape.width);
-            printf("Input the height: ");
-            get_param(&shape.height);
-            printf("Width = %f cm\n", shape.height);
-            break;
-
-        case 6: // Sphere
-            printf("Input the radius: ");
-            get_param(&shape.radius);
-            printf("Radius = %f cm\n", shape.radius);
-            break;
-
-        case 7: // Cone
-            printf("Input the radius: ");
-            get_param(&shape.radius);
-            printf("Radius = %f cm\n", shape.radius);
-            printf("Input the height: ");
-            get_param(&shape.height);
-            printf("height = %f cm\n", shape.height);
-            break;
-    }
-    printf("\n\n");
-    printf("//================================== Output ==================================//\n");
-    printf("// Object Selected  : %s\n", object[input-1]);
-    if(object_dimension == 1){
-        printf("// Object Dimension : 2D\n");
-        printf("// Circumference    : %.2f cm\n", calculations(object_dimension, input, 1, shape)); 
-        printf("// Area             : %.2f cm^2\n", calculations(object_dimension, input, 2, shape));
-    }
-    else{
-        printf("// Object Dimension : 3D\n");
-        printf("// Volume           : %.2f cm^3\n", calculations(object_dimension, input, 1, shape)); 
-        printf("// Surface Area     : %.2f cm^2\n", calculations(object_dimension, input, 2, shape));
-    }
-    printf("//================================== Output ==================================//\n\n");
-
-    printf("Continue trying other shapes? (y/n)\nEnter 'y' for yes or 'n' for no\n");
-    printf("\n");
-    do {
-        fflush(stdin);
-        scanf("%c", &cont);
-        cont = toupper(cont);
-        switch (cont)
-        {
-        case 'Y': main();
-
-            break;
-
-        case'N': printf("Exiting...\n");
-            break;
+        if(input >= 1 && input<=3){
+            object_dimension = 1; //2D
         }
-    } while (cont != 'Y' && cont != 'N');
+        else{
+            object_dimension = 2; //3D
+        }
+        display_chosen(object, input);
+
+        switch(input){
+            case 1: // Rectangle
+                printf("Input the length: ");
+                get_param(&shape.length);
+                printf("Length = %f cm\n", shape.length);
+                printf("Input the width: ");
+                get_param(&shape.width);
+                printf("Width = %f cm\n", shape.width);
+                break;
+
+            case 2: // Square
+                printf("Input the length: ");
+                get_param(&shape.length);
+                shape.width = shape.length;
+                printf("Length = %f cm\n", shape.length);
+                break;
+
+            case 3: // Circle
+                printf("Input the radius: ");
+                get_param(&shape.radius);
+                printf("Radius = %f cm\n", shape.radius);
+                break;
+
+            case 4: // Cube
+                printf("Input the length: ");
+                get_param(&shape.length);
+                shape.height = shape.length;
+                shape.width = shape.length;
+                printf("Length = %f cm\n", shape.length);
+                break;
+
+            case 5: // Block
+                printf("Input the length: ");
+                get_param(&shape.length);
+                printf("Length = %f cm\n", shape.length);
+                printf("Input the width: ");
+                get_param(&shape.width);
+                printf("Width = %f cm\n", shape.width);
+                printf("Input the height: ");
+                get_param(&shape.height);
+                printf("Width = %f cm\n", shape.height);
+                break;
+
+            case 6: // Sphere
+                printf("Input the radius: ");
+                get_param(&shape.radius);
+                printf("Radius = %f cm\n", shape.radius);
+                break;
+
+            case 7: // Cone
+                printf("Input the radius: ");
+                get_param(&shape.radius);
+                printf("Radius = %f cm\n", shape.radius);
+                printf("Input the height: ");
+                get_param(&shape.height);
+                printf("height = %f cm\n", shape.height);
+                break;
+        }
+        printf("\n\n\n\n");
+        printf("//================================== Input ==================================//\n");
+        printf("//\n");
+        printf("// Object Selected  : %s\n", object[input-1]);
+        if(shape.length>0){printf("// Length           : %.2f cm\n", shape.length);}
+        if(shape.width>0){printf("// Width            : %.2f cm\n", shape.width);}
+        if(shape.height>0){printf("// Height           : %.2f cm\n", shape.height);}
+        if(shape.radius>0){printf("// Radius           : %.2f cm\n", shape.radius);}
+        printf("//\n");
+        printf("//================================== Input ==================================//\n\n\n");
+
+        printf("//================================ Properties ================================//\n");
+        printf("//\n");
+        if(object_dimension == 1){
+            printf("// Object Dimension : 2D\n");
+            printf("// Circumference    : %.2f cm\n", calculations(object_dimension, input, 1, shape)); 
+            printf("// Area             : %.2f cm^2\n", calculations(object_dimension, input, 2, shape));
+        }
+        else{
+            printf("// Object Dimension : 3D\n");
+            printf("// Volume           : %.2f cm^3\n", calculations(object_dimension, input, 1, shape)); 
+            printf("// Surface Area     : %.2f cm^2\n", calculations(object_dimension, input, 2, shape));
+        }
+        printf("//\n");
+        printf("//================================ Properties ================================//\n\n");
+
+        printf("Continue trying other shapes? (y/n)\nEnter 'y' for yes or 'n' for no\n");
+        printf("\n");
+        do {
+            fflush(stdin);
+            scanf("%c", &cont);
+            cont = toupper(cont);
+            switch (cont)
+            {
+                case 'Y': 
+                    break;
+
+                case'N': //printf("%d\n",total.count);
+                    return 0;
+            }
+        } while (cont != 'Y' && cont != 'N');
+    }
 }
