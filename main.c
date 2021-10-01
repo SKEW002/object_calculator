@@ -3,17 +3,11 @@
 #include <ctype.h>
 #include <math.h>
 #include <stdlib.h>
-//#include "main.h"
+#include "main.h"
 
 char object[6][15];
 int n_choices; 
 
-typedef struct shape_param{
-    float length;
-    float width;
-    float height;
-    float radius;
-} Shape;
 
 // A series of functions for each object that provides calculations for all attributes
 float square(float length, int property)
@@ -53,7 +47,7 @@ float cone(float radius, float height, int property)
 
 // Calls the correct algorithm to calculate a certain property of an object
 
-float calculations(int object_dimension , int object_number, int property, Shape shape)
+float calculations(int object_dimension , int object_number, int property, ShapeInfo shape)
 {
     if (object_dimension == 1){
         switch (object_number)
@@ -87,7 +81,6 @@ float calculations(int object_dimension , int object_number, int property, Shape
     }
 
 }
-
 
 // print out all Options with numbering 
 int display_options(const char options[][15])
@@ -174,20 +167,312 @@ int display_shapes(char object[][15])
         }
         printf("%d : %s \n", i+1,object[i]);
     }
-
 }
 
 
-int main() {
-    while(1){
+int insert(LinkedShape *ls, ShapeInfo shape_info)
+{
+    ShapeInfo *cur, *pre;
+
+    cur = ls->head;
+    ls->head = malloc(sizeof(ShapeInfo));
+    pre = ls->head;
+    pre->length = shape_info.length;
+    pre->width = shape_info.width;
+    pre->height = shape_info.height;
+    pre->radius = shape_info.radius;
+    pre->circumference = shape_info.circumference;
+    pre->area = shape_info.area;
+    pre->volume = shape_info.volume;
+    pre->surface_area = shape_info.surface_area;
+    pre->next = cur;
+    ls->size++;
+    return 0;
+}
+
+void mean_std_deviation(LinkedShape *ls) {
+    float sum, mean, SD = 0.0;
+
+    ShapeInfo *cur = ls->head;
+    if(cur->length > 0){
+        while (cur != NULL){
+            sum += cur->length;
+            cur = cur->next;
+        }
+
+        mean = sum / ls->size;
+        cur = ls->head;
+
+        while (cur != NULL) {
+            SD += pow(cur->length - mean, 2);
+            cur = cur->next;
+        }
+        SD = sqrt(SD / (ls->size-1));
+        cur = ls->head;
+        printf("Mean value of length: %.2f cm\nStd deviation of length: %.2f cm\n\n", mean,SD);
+        sum = 0.0; mean = 0.0, SD = 0.0;
+    }
+
+    if(cur->width > 0){
+        while (cur != NULL){
+            sum += cur->width;
+            cur = cur->next;
+        }
+
+        mean = sum / ls->size;
+        cur = ls->head;
+
+        while (cur != NULL) {
+            SD += pow(cur->width - mean, 2);
+            cur = cur->next;
+        }
+        SD = sqrt(SD / (ls->size-1));
+        cur = ls->head;
+        printf("Mean value of width: %.2f cm\nStd deviation of width: %.2f cm\n\n", mean,SD);
+        sum = 0.0; mean = 0.0, SD = 0.0;  
+    }
+
+    if(cur->height > 0){
+        while (cur != NULL){
+            sum += cur->height;
+            cur = cur->next;
+        }
+
+        mean = sum / ls->size;
+        cur = ls->head;
+
+        while (cur != NULL) {
+            SD += pow(cur->height - mean, 2);
+            cur = cur->next;
+        }
+        SD = sqrt(SD / (ls->size-1));
+        cur = ls->head;
+        printf("Mean value of height: %.2f cm\nStd deviation of height: %.2f cm\n\n", mean,SD);
+        sum = 0.0; mean = 0.0, SD = 0.0;
+    }
+
+    if(cur->radius > 0){
+        while (cur != NULL){
+            sum += cur->radius;
+            cur = cur->next;
+        }
+
+        mean = sum / ls->size;
+        cur = ls->head;
+
+        while (cur != NULL) {
+            SD += pow(cur->radius - mean, 2);
+            cur = cur->next;
+        }
+        SD = sqrt(SD / (ls->size-1));
+        cur = ls->head;
+        printf("Mean value of radius: %.2f cm\nStd deviation of radius: %.2f cm\n\n", mean,SD);
+        sum = 0.0; mean = 0.0, SD = 0.0;
+    } 
+
+    if(cur->circumference > 0){
+        while (cur != NULL){
+            sum += cur->circumference;
+            cur = cur->next;
+        }
+
+        mean = sum / ls->size;
+        cur = ls->head;
+
+        while (cur != NULL) {
+            SD += pow(cur->circumference - mean, 2);
+            cur = cur->next;
+        }
+        SD = sqrt(SD / (ls->size-1));
+        cur = ls->head;
+        printf("Mean value of circumference: %.2f cm\nStd deviation of circumference: %.2f cm\n\n", mean,SD);
+        sum = 0.0; mean = 0.0, SD = 0.0;
+    }
+
+    if(cur->area > 0){
+        sum, mean, SD = 0.0;
+        while (cur != NULL){
+            sum += cur->area;
+            cur = cur->next;
+        }
+
+        mean = sum / ls->size;
+        cur = ls->head;
+
+        while (cur != NULL) {
+            SD += pow(cur->area - mean, 2);
+            cur = cur->next;
+        }
+        SD = sqrt(SD / (ls->size-1));
+        cur = ls->head;
+        printf("Mean value of area: %.2f cm\nStd deviation of area: %.2f cm^2\n\n", mean,SD);
+        sum = 0.0; mean = 0.0, SD = 0.0;
+    }   
+
+    if(cur->volume > 0){
+        while (cur != NULL){
+            sum += cur->volume;
+            cur = cur->next;
+        }
+
+        mean = sum / ls->size;
+        cur = ls->head;
+
+        while (cur != NULL) {
+            SD += pow(cur->volume - mean, 2);
+            cur = cur->next;
+        }
+        SD = sqrt(SD / (ls->size-1));
+        cur = ls->head;
+        printf("Mean value of volume: %.2f cm^3\nStd deviation of volume: %.2f cm^3\n\n", mean,SD);
+        sum = 0.0; mean = 0.0, SD = 0.0;
+    }
+
+    if(cur->surface_area > 0){
+        while (cur != NULL){
+            sum += cur->surface_area;
+            cur = cur->next;
+        }
+
+        mean = sum / ls->size;
+        cur = ls->head;
+
+        while (cur != NULL) {
+            SD += pow(cur->surface_area - mean, 2);
+            cur = cur->next;
+        }
+        SD = sqrt(SD / (ls->size-1));
+        cur = ls->head;
+        printf("Mean value of surface_area: %.2f cm^2\nStd deviation of surface_area: %.2f cm^2\n\n", mean,SD);
+        sum = 0.0; mean = 0.0, SD = 0.0;
+    }
+}
+
+
+void printList(LinkedShape *ls){
+
+    ShapeInfo *cur;
+    cur = ls->head;
+
+    if(cur->length>0){
+        printf("length: ");
+        while(cur!=NULL){
+            printf("%.2f ", cur->length);
+            cur = cur->next;
+        }
+        printf(" cm\n\n");
+        cur = ls->head;
+    }
+
+    if(cur->width>0){
+        printf("width: ");
+        while(cur!=NULL){
+            printf("%.2f ", cur->width);
+            cur = cur->next;
+        }
+        printf(" cm\n\n");
+        cur = ls->head;
+    }
+
+    if(cur->height>0){
+        printf("height: ");
+        while(cur!=NULL){
+            printf("%.2f ", cur->height);
+            cur = cur->next;
+        }
+        printf(" cm\n\n");
+        cur = ls->head;
+    }
+    if(cur->radius>0){
+        printf("radius: ");
+        while(cur!=NULL){
+            printf("%.2f ", cur->radius);
+            cur = cur->next;
+        }
+        printf(" cm\n\n");
+        cur = ls->head;
+    }
+
+    if(cur->circumference>0){
+        printf("circumference: ");
+        while(cur!=NULL){
+            printf("%.2f ", cur->circumference);
+            cur = cur->next;
+        }
+        printf(" cm\n\n");
+        cur = ls->head;
+    }
+
+    if(cur->area>0){
+        printf("area: ");
+        while(cur!=NULL){
+            printf("%.2f ", cur->area);
+            cur = cur->next;
+        }
+        printf(" cm^2\n\n");
+        cur = ls->head;
+    }
+    if(cur->volume>0){
+        printf("volume: ");
+        while(cur!=NULL){
+            printf("%.2f ", cur->volume);
+            cur = cur->next;
+        }
+        printf(" cm^3\n\n");
+        cur = ls->head;
+    }
+    if(cur->surface_area>0){
+        printf("surface_area: ");
+        while(cur!=NULL){
+            printf("%.2f ", cur->surface_area);
+            cur = cur->next;
+        }
+        printf(" cm^2\n\n");
+    }
+
+    printf("\n");
+    mean_std_deviation(ls);
+}
+
+void removeAllItems(LinkedShape *ll)
+{
+    ShapeInfo *cur = ll->head;
+    ShapeInfo *tmp;
+
+    while (cur != NULL){
+        tmp = cur->next;
+        free(cur);
+        cur = tmp;
+    }
+    ll->head = NULL;
+    ll->size = 0;
+}
+
+
+int main() 
+{
+    ShapeInfo shape;
+    LinkedShape rectangle = {0,NULL};
+    LinkedShape square = {0,NULL};
+    LinkedShape circle = {0,NULL};
+    LinkedShape cube = {0,NULL};
+    LinkedShape block = {0,NULL};
+    LinkedShape sphere = {0,NULL};
+    LinkedShape cone = {0,NULL}; 
+
+    while(1)
+    {
         char cont;
         int input = 0;
         //system("clear");
-        Shape shape;
         shape.length = 0;
         shape.width = 0;
         shape.height = 0;
         shape.radius = 0;
+        shape.circumference = 0;
+        shape.area = 0;
+        shape.volume = 0;
+        shape.surface_area = 0;
 
         int object_dimension;
 
@@ -215,6 +500,7 @@ int main() {
                 printf("Input the width: ");
                 get_param(&shape.width);
                 printf("Width = %f cm\n", shape.width);
+
                 break;
 
             case 2: // Square
@@ -280,19 +566,34 @@ int main() {
         printf("//\n");
         if(object_dimension == 1){
             printf("// Object Dimension : 2D\n");
-            printf("// Circumference    : %.2f cm\n", calculations(object_dimension, input, 1, shape)); 
-            printf("// Area             : %.2f cm^2\n", calculations(object_dimension, input, 2, shape));
+            printf("// Circumference    : %.2f cm\n", shape.circumference = calculations(object_dimension, input, 1, shape)); 
+            printf("// Area             : %.2f cm^2\n", shape.area = calculations(object_dimension, input, 2, shape));
         }
         else{
             printf("// Object Dimension : 3D\n");
-            printf("// Volume           : %.2f cm^3\n", calculations(object_dimension, input, 1, shape)); 
-            printf("// Surface Area     : %.2f cm^2\n", calculations(object_dimension, input, 2, shape));
+            printf("// Volume           : %.2f cm^3\n", shape.volume = calculations(object_dimension, input, 1, shape)); 
+            printf("// Surface Area     : %.2f cm^2\n", shape.surface_area = calculations(object_dimension, input, 2, shape));
         }
         printf("//\n");
         printf("//================================ Properties ================================//\n\n");
 
+        if(input == 1) 
+            insert(&rectangle, shape);
+        else if(input == 2) 
+            insert(&square, shape);
+        else if(input == 3) 
+            insert(&circle, shape);
+        else if(input == 4) 
+            insert(&cube, shape);
+        else if(input == 5) 
+            insert(&block, shape);
+        else if(input == 6) 
+            insert(&sphere, shape);
+        else if(input == 7) 
+            insert(&cone, shape);
+
         printf("Continue trying other shapes? (y/n)\nEnter 'y' for yes or 'n' for no\n");
-        printf("\n");
+        //system("clear");
         do {
             fflush(stdin);
             scanf("%c", &cont);
@@ -303,8 +604,39 @@ int main() {
                     break;
 
                 case'N': //printf("%d\n",total.count);
+                    //printList(&square);
+                    printf("Rectangle: %d\n\n", rectangle.size);
+                    printList(&rectangle);
+                    removeAllItems(&rectangle);
+                    printf("\n\n\n");
+
+                    printf("Square: %d\n\n", square.size);
+                    printList(&square);
+                    removeAllItems(&square);
+                    printf("\n\n\n");
+
+                    printf("Circle: %d\n\n", circle.size);
+                    printList(&circle);
+                    printf("\n\n\n");
+
+                    printf("Cube: %d\n\n", cube.size);
+                    printList(&cube);    
+                    printf("\n\n\n");   
+
+                    printf("Block: %d\n\n", block.size);
+                    printList(&block);
+                    printf("\n\n\n");
+
+                    printf("Sphere: %d\n\n", sphere.size);
+                    printList(&sphere);
+                    printf("\n\n\n");
+
+                    printf("Cone: %d\n\n", cone.size);
+                    printList(&cone);
+                    printf("\n\n\n");
                     return 0;
             }
         } while (cont != 'Y' && cont != 'N');
     }
 }
+
